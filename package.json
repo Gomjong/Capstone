@@ -1,0 +1,9 @@
+{
+  "name": "noom",
+  "version": "1.0.0",
+  "description": "Zoom clone using Websockets",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
