@@ -19,11 +19,21 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
     sockets.push(socket); // sockets [] 배열을 만들어서 누가 들어왔는지 알려주게끔 만들기 위해 sockets 만듬 
+    socket["nickname"] = "Anon"
     console.log("Connected to Browser");
     socket.on("close", () => console.log("Disconnected from the Browser") );
-    socket.on("message", (message) => {
-        sockets.forEach(aSocket => aSocket.send(message.toString())); // 각 브라우저를 aSocket이라고함
+    socket.on("message", (msg) => {
+        const message = JSON.parse(msg);
+        switch(message.type) {
+            case "new_message":
+                sockets.forEach((aSocket) => aSocket.send(`${socket.nickname} : ${message.payload}`));
+                break;
+            case "nickname":
+                socket["nickname"] = message.payload;
+                break;
+        }
     });
 });
 
 server.listen(3000, handleListen)
+
